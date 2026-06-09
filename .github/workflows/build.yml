@@ -2,13 +2,14 @@ name: Build Plugin
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -17,14 +18,14 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Make gradlew executable
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build
+      - name: Build with Gradle
         run: ./gradlew build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: plugin
+          name: plugin-jar
           path: build/libs/*.jar
